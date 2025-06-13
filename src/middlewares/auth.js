@@ -13,7 +13,7 @@
  const userAuth = async  (req,res,next) => {
     try{
         const {token} = req.cookies;
-        const decodeObj = await jwt.verify(token,"DEVTinder@25");
+        const decodeObj = await jwt.verify(token,process.env.JWT_SECRET);
         const {_id}= decodeObj;
         const user = await User.findById(_id);
         if(!user){
