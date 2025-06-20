@@ -5,6 +5,20 @@ const ConnectionRequest = require ("../models/connectionRequest.js");
 const { toUSVString } = require('util');
 const User = require('../models/user.js');
 const USER_SAFE_DATA = "firstName lastName photoUrl age gender about";
+userRouter.get('/user/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('firstName lastName photoUrl');
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ user });
+  } catch (err) {
+    console.error('Error fetching user:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 userRouter.get("/user/requests/recieved",userAuth,async (req,res) => {
     try {
