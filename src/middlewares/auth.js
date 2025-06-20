@@ -10,7 +10,7 @@
         next();
     }
 } */
- const userAuth = async  (req,res,next) => {
+ /* const userAuth = async  (req,res,next) => {
     try{
         const {token} = req.cookies;
         const decodeObj = await jwt.verify(token,process.env.JWT_SECRET);
@@ -26,4 +26,31 @@
     }
 }
 
-module.exports = {userAuth};
+module.exports = {userAuth}; */
+const jwt = require('jsonwebtoken');
+const User = require('../models/user.js');
+
+const userAuth = async (req, res, next) => {
+  try {
+    const token = req.cookies?.token;
+
+    if (!token) {
+      return res.status(401).json({ error: "No token found. Please log in." });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded._id);
+
+    if (!user) {
+      return res.status(401).json({ error: "User not found. Please log in." });
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    console.error("Auth error:", err.message);
+    res.status(401).json({ error: "Unauthorized access. Invalid or expired token." });
+  }
+};
+
+module.exports = { userAuth };
