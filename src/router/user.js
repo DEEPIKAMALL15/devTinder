@@ -5,7 +5,7 @@ const ConnectionRequest = require ("../models/connectionRequest.js");
 const { toUSVString } = require('util');
 const User = require('../models/user.js');
 const USER_SAFE_DATA = "firstName lastName photoUrl age gender about";
-userRouter.get('/user/:id', async (req, res) => {
+userRouter.get('/user/connections/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('firstName lastName photoUrl');
     
