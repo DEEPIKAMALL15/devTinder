@@ -32,7 +32,7 @@ app.use('/',requestRouter);
 app.use('/',userRouter);
 app.use('/',chatRouter);
 app.get("/", (req, res) => {
-  res.send("Server is running ✅");
+  return res.send("Server is running ✅");
 });
 
 
