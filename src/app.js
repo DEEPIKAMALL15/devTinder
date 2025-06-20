@@ -9,7 +9,7 @@ require('dotenv').config();
 
 
 app.use(cors({
-  origin: process.env.BASE_URL || "http://localhost:5173",
+  origin: "https://devconnect-frontend-zeta.vercel.app" || "http://localhost:5173",
   credentials: true,
   
 }));
