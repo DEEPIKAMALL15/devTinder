@@ -98,7 +98,7 @@ initializeSocket(server);
 connectDB()
   .then(() => {
     console.log('✅ Database connected successfully');
-    server.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT,'0.0.0.0', () => {
       console.log(`🚀 Server is running on port ${process.env.PORT}`);
     });
   })
