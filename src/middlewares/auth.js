@@ -26,9 +26,11 @@
 }
 
 module.exports = {userAuth}; */
-const jwt = require('jsonwebtoken');
+/* const jwt = require('jsonwebtoken');
 const User = require('../models/user.js');
-
+ */
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 const userAuth = async (req, res, next) => {
   try {
     const token = req.cookies?.token;
@@ -52,4 +54,4 @@ const userAuth = async (req, res, next) => {
   }
 };
 
-module.exports = { userAuth };
+export default userAuth;

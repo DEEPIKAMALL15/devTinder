@@ -1,4 +1,4 @@
-const express = require ('express');
+/* const express = require ('express');
 const connectDB = require('./config/database');
 const app= express();
 const cookieParser = require ('cookie-parser');
@@ -54,3 +54,54 @@ connectDB()
 
 
 
+ */
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import http from 'http';
+import dotenv from 'dotenv';
+
+import connectDB from './config/database.js';
+import authRouter from './router/auth.js';
+import profileRouter from './router/profile.js';
+import requestRouter from './router/request.js';
+import userRouter from './router/user.js';
+import initializeSocket from './utils/socket.js';
+import chatRouter from './router/chat.js';
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+}));
+
+app.use(express.json());
+app.use(cookieParser());
+
+// Routes
+app.use('/', authRouter);
+app.use('/', profileRouter);
+app.use('/', requestRouter);
+app.use('/', userRouter);
+app.use('/', chatRouter);
+
+app.get('/', (req, res) => {
+  return res.send('Server is running ✅');
+});
+
+const server = http.createServer(app);
+initializeSocket(server);
+
+connectDB()
+  .then(() => {
+    console.log('✅ Database connected successfully');
+    server.listen(process.env.PORT, () => {
+      console.log(`🚀 Server is running on port ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ Failed to connect to database:', err.message);
+  });
